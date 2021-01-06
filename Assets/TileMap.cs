@@ -5,6 +5,8 @@ using UnityEngine;
 public class TileMap : MonoBehaviour
 {
 
+    public const float LAND_TRANSLATE = 0.49f;
+
     // prefab
     public LandTile landTilePrefab;   // damage
     public WaterTile waterTilePrefab;  // energy
@@ -36,7 +38,7 @@ public class TileMap : MonoBehaviour
                     if (landLevel > 0.5f)
                     {
                         landTileMap[(int) x, (int) y] = Instantiate(landTilePrefab) as LandTile;
-                        Vector3 landPosition = new Vector3(x - width / 2, y - height / 2, landLevel - 0.49f);
+                        Vector3 landPosition = new Vector3(x - width / 2, y - height / 2, landLevel - LAND_TRANSLATE);
                         landTileMap[(int) x, (int) y].GetComponent<LandTile>().Init(landPosition);
                     }
                     // else null
@@ -57,9 +59,9 @@ public class TileMap : MonoBehaviour
         if (Input.GetKey(KeyCode.W))
         {
             // Let's hardcode a point first just to test the wave motion.
-            for (int y = -2; y < 2; y++)
+            for (int y = -8; y < -6; y++)
             {
-                for (int x = -2; x < 2; x++)
+                for (int x = -8; x < -6; x++)
                 {
                     waterTileMap[width / 2 + x, height / 2 + y].GetComponent<WaterTile>().
                         ChangeEnergy(waterTileMap[width / 2 + x, height / 2 + y].
