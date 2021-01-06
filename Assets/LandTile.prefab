@@ -106,4 +106,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1838c004c25d7b142bcea00b1e14c95f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resistance: 0
+  buildingsPrefab: {fileID: 9207038000191207532, guid: 39f2d014608191f42bef92756a1847c0,
+    type: 3}

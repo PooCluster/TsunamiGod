@@ -23,6 +23,9 @@ public class TileMap : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // can seed these two noises to get the same map every time
+        int worldNoise = Random.Range(0, 10000);
+        int civPerlinNoise = Random.Range(0, 10000);
         if (width > 0 && height > 0)
         {
             landTileMap = new LandTile[width, height];
@@ -34,12 +37,22 @@ public class TileMap : MonoBehaviour
                 {
                     
                     // land tile stuff
-                    float landLevel = Mathf.PerlinNoise(x * noiseScale, y * noiseScale);  // 0 - 1
+                    float landLevel = Mathf.PerlinNoise(x * noiseScale + worldNoise, y * noiseScale + worldNoise);  // 0 - 1
                     if (landLevel > 0.5f)
                     {
                         landTileMap[(int) x, (int) y] = Instantiate(landTilePrefab) as LandTile;
                         Vector3 landPosition = new Vector3(x - width / 2, y - height / 2, landLevel - LAND_TRANSLATE);
-                        landTileMap[(int) x, (int) y].GetComponent<LandTile>().Init(landPosition);
+                        float civNoise = Mathf.PerlinNoise(x * noiseScale + civPerlinNoise, y * noiseScale + civPerlinNoise);
+                        int populationLevel = 0;
+                        if (civNoise > 0.8f)
+                            populationLevel = 3;
+                        else if (civNoise > 0.7f)
+                            populationLevel = 2;
+                        else if (civNoise > 0.5f)
+                            populationLevel = 1;
+                        else
+                            populationLevel = 0;
+                        landTileMap[(int) x, (int) y].GetComponent<LandTile>().Init(landPosition, populationLevel);
                     }
                     // else null
                     // water tile stuff
